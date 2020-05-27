@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/metar_map/server
+WorkingDirectory=/root/metar_map/wx-maps-server
 ExecStart=node index
 Restart=on-failure
 Environment=METAR_MAP_ENV=production
