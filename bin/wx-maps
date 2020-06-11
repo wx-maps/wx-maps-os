@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# General use script to make interacting/troubleshooting
+# easier.
+
+function help_message(){
+  echo "$(basename $0) help:"
+  echo -e "\tstatus:\tGet wx-map container status"
+  echo -e "\tstart:\tStart all wx-map containers"
+  echo -e "\tstop:\tStop all wx-map containers"
+  echo -e "\tup:\tBuilds all wx-map containers"
+  echo -e "\tdown:\tStops and removes all wx-map containers"
+  echo -e "\tlogs:\tWatch logs from the wx-map-server container"
+  echo -e "\tclean-up:\tRemove all wx-map containers"
+  exit 0
+}
+
+if [[ $# == 0 ]]; then
+  help_message;
+fi
+
+set -euo pipefail
+
+DOCKER=$(which docker)
+DOCKER_COMPOSE=$(which docker-compose)
+
+SERVER_CONTAINER='wx-maps-server'
+CLIENT_CONTAINER='wx-maps-client'
+WATCHTOWER_CONTAINER='wx-maps-watchtower'
+
+COMMAND=${1}
+case $COMMAND in
+  status)
+    $DOCKER_COMPOSE ps
+    $DOCKER ps
+    ;;
+  # TODO Combine start/up. If we have containers associated run start, if not run up
+  start)
+    $DOCKER_COMPOSE start -d
+    ;;
+  stop)
+    $DOCKER_COMPOSE stop
+    ;;
+  up)
+    $DOCKER_COMPOSE up -d
+    ;;
+  down)
+    $DOCKER_COMPOSE down
+    ;;
+  dev)
+    $DOCKER_COMPOSE up
+    ;;
+  logs)
+    $DOCKER logs -f $SERVER_CONTAINER
+    ;;
+  clean-up)
+    $DOCKER rm $SERVER_CONTAINER $CLIENT_CONTAINER $WATCHTOWER_CONTAINER
+    ;;
+  *)
+    echo "Unknown command '$COMMAND'"
+    help_message
+    ;;
+esac
+
