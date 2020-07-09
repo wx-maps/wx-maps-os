@@ -45,7 +45,7 @@
     - name: 'Add wx-maps-os update cronjob'
       cron:
         name: 'Update wx-maps-os'
-        minute: '*/2'
+        minute: '42'
         job: 'cd /etc/wx-maps && git pull'
     - name: 'Add wx-maps profile'
       blockinfile:
