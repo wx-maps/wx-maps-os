@@ -5,13 +5,15 @@
 
 function help_message(){
   echo "$(basename $0) help:"
-  echo -e "\tstatus:\tGet wx-map container status"
-  echo -e "\tstart:\tStart all wx-map containers"
-  echo -e "\tstop:\tStop all wx-map containers"
-  echo -e "\tup:\tBuilds all wx-map containers"
-  echo -e "\tdown:\tStops and removes all wx-map containers"
-  echo -e "\tlogs:\tWatch logs from the wx-map-server container"
+  echo -e "\tstatus:\t\tGet wx-map container status"
+  echo -e "\tstart:\t\tStart all wx-map containers"
+  echo -e "\tstop:\t\tStop all wx-map containers"
+  echo -e "\trestart:\tStop/start all wx-map containers"
+  echo -e "\tup:\t\tBuilds all wx-map containers"
+  echo -e "\tdown:\t\tStops and removes all wx-map containers"
+  echo -e "\tlogs:\t\tWatch logs from the wx-map-server container"
   echo -e "\tclean-up:\tRemove all wx-map containers"
+  echo -e "\tmetars:\t\tDisplay current metar file from the server"
   exit 0
 }
 
@@ -36,7 +38,7 @@ case $COMMAND in
     ;;
   # TODO Combine start/up. If we have containers associated run start, if not run up
   start)
-    $DOCKER_COMPOSE start -d
+    $DOCKER_COMPOSE start
     ;;
   stop)
     $DOCKER_COMPOSE stop
@@ -47,6 +49,9 @@ case $COMMAND in
   down)
     $DOCKER_COMPOSE down
     ;;
+  restart)
+    $DOCKER_COMPOSE down && $DOCKER_COMPOSE up -d
+    ;;
   dev)
     $DOCKER_COMPOSE up
     ;;
@@ -55,6 +60,9 @@ case $COMMAND in
     ;;
   clean-up)
     $DOCKER rm $SERVER_CONTAINER $CLIENT_CONTAINER $WATCHTOWER_CONTAINER
+    ;;
+  metars)
+    $DOCKER exec $SERVER_CONTAINER cat /tmp/metar
     ;;
   *)
     echo "Unknown command '$COMMAND'"
