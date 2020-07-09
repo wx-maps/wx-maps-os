@@ -8,6 +8,12 @@
     - name: 'Set hostname'
       hostname:
         name: wx-map-{{uuid.stdout}}
+    - name: 'Update /etc/hosts hostname'
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^127\.0\.0\.1[ \t]+localhost'
+        line: '127.0.0.1 localhost wx-map-{{uuid.stdout}}'
+        state: present
     - name: 'Fetch Docker'
       get_url:
         url: https://get.docker.com
@@ -56,6 +62,3 @@
           fi
     - name: 'Start WX Maps Containers'
       shell: . /etc/wx-maps/profile && wx-maps up
-
-
-
