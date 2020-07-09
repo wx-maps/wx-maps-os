@@ -17,5 +17,5 @@ if [[ -z $INTERCHANGE ]]; then
   exit 1
 fi
 
-$INTERCHANGE install git+${REPO} -a $ARDUINO_MODEL --firmata
+$INTERCHANGE install git+${REPO} -a $ARDUINO_MODEL
 
