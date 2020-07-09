@@ -8,6 +8,7 @@ function help_message(){
   echo -e "\tstatus:\tGet wx-map container status"
   echo -e "\tstart:\tStart all wx-map containers"
   echo -e "\tstop:\tStop all wx-map containers"
+  echo -e "\trestart:\tStop/start all wx-map containers"
   echo -e "\tup:\tBuilds all wx-map containers"
   echo -e "\tdown:\tStops and removes all wx-map containers"
   echo -e "\tlogs:\tWatch logs from the wx-map-server container"
@@ -36,7 +37,7 @@ case $COMMAND in
     ;;
   # TODO Combine start/up. If we have containers associated run start, if not run up
   start)
-    $DOCKER_COMPOSE start -d
+    $DOCKER_COMPOSE start
     ;;
   stop)
     $DOCKER_COMPOSE stop
@@ -46,6 +47,9 @@ case $COMMAND in
     ;;
   down)
     $DOCKER_COMPOSE down
+    ;;
+  restart)
+    $DOCKER_COMPOSE down && $DOCKER_COMPOSE up -d
     ;;
   dev)
     $DOCKER_COMPOSE up
