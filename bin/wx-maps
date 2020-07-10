@@ -30,6 +30,10 @@ SERVER_CONTAINER='wx-maps-server'
 CLIENT_CONTAINER='wx-maps-client'
 WATCHTOWER_CONTAINER='wx-maps-watchtower'
 
+
+## TODO Add "interactive" command to spin up a new container to play around in
+# docker run -v /lib/modules:/lib/modules -it -v /etc/wx-maps:/etc/wx-maps --privileged --network host wxmaps/wx-maps-server  /bin/bash
+
 COMMAND=${1}
 case $COMMAND in
   status)
